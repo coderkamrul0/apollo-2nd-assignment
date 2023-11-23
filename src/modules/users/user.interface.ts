@@ -1,3 +1,5 @@
+
+
 export type IFullName = {
   firstName: string;
   lastName: string;
@@ -22,7 +24,7 @@ export type IUser = {
   fullName: IFullName;
   age: number;
   email: string;
-  isActive: boolean;
+  isActive?: boolean;
   hobbies: string[];
   address: IAddress;
   orders?: IOrders[];
