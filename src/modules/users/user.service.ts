@@ -21,7 +21,7 @@ const getSingleUser = async (userId: number) => {
   if (!(await User.isUserExist(userId))) {
     throw new Error('User not found!');
   }
-  const result = await User.findOne({ userId });
+  const result = await User.findOne({ userId },{orders: 0, __v:0});
   return result;
 };
 

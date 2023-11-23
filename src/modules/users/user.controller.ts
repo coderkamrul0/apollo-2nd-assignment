@@ -112,12 +112,12 @@ const addOrder = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: 'Internal Server Error',
+      message: error.message || 'Something went wrong!',
       error: {
-        code: 500,
-        description: error.message,
+        code: 404,
+        description: error.message || 'Something went wrong!',
       },
     });
   }
@@ -131,15 +131,15 @@ const getAllOrders = async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: 'Order fetched successfully!',
-      data: { orders },
+      data:  orders ,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: 'Internal Server Error',
+      message: error.message || 'Something went wrong!',
       error: {
-        code: 500,
-        description: error.message,
+        code: 404,
+        description: error.message || 'Something went wrong!',
       },
     });
   }
@@ -153,15 +153,15 @@ const calculateTotalPrice = async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: 'Total price calculated successfully!',
-      data: totalPrice,
+      data: totalPrice || { totalPrice: 0 },
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: 'Internal Server Error',
+      message: error.message || 'Something went wrong!',
       error: {
-        code: 500,
-        description: error.message,
+        code: 404,
+        description: error.message || 'Something went wrong!',
       },
     });
   }

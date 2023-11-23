@@ -106,13 +106,6 @@ Routes define the API endpoints and link them to the appropriate controllers.
 - Bcrypt
 - Other dependencies (list them if any)
 
-## Project Usage
-
-1. Install dependencies: `npm install`
-2. Configure MongoDB connection in `.env` file.
-3. Run the application: `npm start`
-4. Access the API at `http://localhost:your-port/`
-
 ## Validation
 
 Incoming data is validated using Joi/Zod in the `validation.middleware.ts` to ensure data integrity.
