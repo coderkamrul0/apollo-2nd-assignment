@@ -12,7 +12,7 @@ const createUser = async (userData: IUser) => {
 const getAllUsers = async () => {
   const result = await User.find(
     {},
-    { username: 1, fullName: 1, age: 1, email: 1, address: 1, _id: 0 },
+    {username: 1, fullName: 1, age: 1, email: 1, address: 1, _id: 0 },
   );
   return result;
 };
@@ -21,7 +21,7 @@ const getSingleUser = async (userId: number) => {
   if (!(await User.isUserExist(userId))) {
     throw new Error('User not found!');
   }
-  const result = await User.findOne({ userId },{orders: 0, __v:0});
+  const result = await User.findOne({ userId },{orders: 0, __v:0, _id:0});
   return result;
 };
 
