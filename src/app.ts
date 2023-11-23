@@ -10,7 +10,7 @@ app.use('/api/users', UserRoutes);
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'Success',
-    message: 'Server is ok',
+    message: 'Apollo User Application server Running!',
   });
 });
 
