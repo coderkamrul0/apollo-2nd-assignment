@@ -1,4 +1,5 @@
-
+/* eslint-disable no-unused-vars */
+import { Model } from "mongoose";
 
 export type IFullName = {
   firstName: string;
@@ -29,3 +30,8 @@ export type IUser = {
   address: IAddress;
   orders?: IOrders[];
 };
+
+// for creating static
+export interface UserModel extends Model<IUser> {
+  isUserExist(userId: number): Promise<IUser | null>;
+}

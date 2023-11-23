@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Schema, model, Document } from 'mongoose';
-import { IAddress, IFullName, IOrders, IUser } from './user.interface';
+import { IAddress, IFullName, IOrders, IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
@@ -27,7 +27,7 @@ const ordersSchema = new Schema<IOrders>({
   quantity: { type: Number, required: true },
 });
 
-const userSchema = new Schema<IUserModel>({
+const userSchema = new Schema<IUserModel, UserModel>({
   userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -39,6 +39,11 @@ const userSchema = new Schema<IUserModel>({
   address: addressSchema,
   orders: { type: [ordersSchema], default: undefined },
 });
+
+userSchema.statics.isUserExist = async function (userId: number) {
+  const existingUser = await User.findOne({ userId });
+  return existingUser;
+};
 
 userSchema.pre('save', async function (next) {
   const user = this as IUserModel;
@@ -52,7 +57,7 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.toJSON = function () {
   const user = this.toObject();
   delete user.password;
-  delete user.orders;
+  // delete user.orders;
   return user;
 };
 
@@ -77,5 +82,5 @@ userSchema.methods.calculateTotalPrice = function () {
   );
 };
 
-const User = model<IUserModel>('User', userSchema);
+const User = model<IUserModel, UserModel>('User', userSchema);
 export default User;

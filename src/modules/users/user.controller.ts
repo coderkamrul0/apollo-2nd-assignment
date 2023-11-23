@@ -39,15 +39,22 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 const getSingleUser = async (req: Request, res: Response) => {
   try {
-    const userId = parseInt(req.params.userId, 10);
+    const userId = Number(req.params.userId);
     const result = await UserServices.getSingleUser(userId);
     res.status(200).json({
       success: true,
       message: 'User fetched successfully!',
       data: result,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || 'Something went wrong!',
+      error: {
+        code: 404,
+        description: error.message || 'Something went wrong!',
+      },
+    });
   }
 };
 
@@ -62,24 +69,34 @@ const updateUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    console.log(error);
+    res.status(400).json({
+      success: false,
+      message: error.message || 'Something went wrong!',
+      error: {
+        code: 404,
+        description: error.message || 'Something went wrong!',
+      },
+    });
   }
 };
 
 const deleteUser = async (req: Request, res: Response) => {
   try {
-    const userId = parseInt(req.params.userId, 10);
+    const userId = Number(req.params.userId);
     await UserServices.deleteUser(userId);
     res.status(200).json({
       status: 'true',
       message: 'User deleted successfully',
+      data: null,
     });
   } catch (error: any) {
-    console.log(error);
-    res.status(500).json({
-      success: true,
-      message: 'User deleted successfully!',
-      data: null,
+    res.status(400).json({
+      success: false,
+      message: error.message || 'Something went wrong!',
+      error: {
+        code: 404,
+        description: error.message || 'Something went wrong!',
+      },
     });
   }
 };
@@ -136,7 +153,7 @@ const calculateTotalPrice = async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: 'Total price calculated successfully!',
-      data: { totalPrice },
+      data: totalPrice,
     });
   } catch (error: any) {
     res.status(500).json({
