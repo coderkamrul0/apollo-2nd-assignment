@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
-import { UserValidation } from './user.validation';
+import { validateUser } from './user.validation';
 import { UserServices } from './user.service';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    const zodParsData = UserValidation.parse(userData);
+    const zodParsData = validateUser(userData);
     const result = await UserServices.createUser(zodParsData);
     res.status(201).json({
       success: true,
@@ -14,9 +14,13 @@ const createUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: error.message || 'Something went wrong!',
+      message: 'Failed to create user!',
+      error: {
+        code: 400,
+        description: error.message,
+      },
     });
   }
 };
@@ -30,9 +34,13 @@ const getAllUsers = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: error.message || 'Something went wrong!',
+      message: 'Failed to fetch users!',
+      error: {
+        code: 400,
+        description: error.message,
+      },
     });
   }
 };

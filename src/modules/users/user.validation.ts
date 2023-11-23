@@ -1,4 +1,5 @@
-import z from 'zod';
+import {z,ZodError} from 'zod';
+import { IUser } from './user.interface';
 
 export const fullNameSchema = z.object({
   firstName: z.string().min(1, { message: 'First name is required' }),
@@ -30,3 +31,17 @@ export const UserValidation = z.object({
   address: addressSchema,
   orders: z.array(ordersSchema).optional(),
 });
+
+
+// Validation function for validating user data
+export function validateUser(data: unknown): IUser {
+  try {
+    return UserValidation.parse(data) as IUser;
+  } catch (error) {
+    if (error instanceof ZodError) {
+      // Handle validation errors, log them, or throw a custom error.
+      throw new Error(`Validation failed: ${error.message}`);
+    }
+    throw error;
+  }
+}
